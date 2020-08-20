@@ -26,7 +26,7 @@ source env/bin/activate
 
 5. Activate the task visualizer. Command line:
 ```
-luigid --background --pidfile ./luigid.pid --logdir luigi --state-path luigi/state --address 0.0.0.0 --port 8082
+luigid --background --pidfile luigid.pid --logdir luigi --state-path luigi/state --address 0.0.0.0 --port 8082
 ```
 6. Open localhost:8082 in a browser window to monitor the tasks
 7. Trigger the pipeline. Command line:
