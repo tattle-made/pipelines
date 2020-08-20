@@ -1,0 +1,19 @@
+# Luigi
+*.pid
+luigi_pipeline_output/
+luigi/
+luigi.cfg
+.venv/
+venv/
+ENV/
+.env
+.ipynb_checkpoints
+env/
+.Python
+lib/
+include/
+bin/
+share/
+.vscode/
+.log
+.DS_Store
