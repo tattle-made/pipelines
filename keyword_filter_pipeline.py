@@ -5,7 +5,7 @@ import pymongo
 from pymongo import MongoClient
 import luigi 
 from luigi.contrib.mongodb import MongoCollectionTarget, MongoCellTarget, MongoRangeTarget
-from luigi.mock import MockFile 
+from luigi.mock import MockTarget
 from luigi.task import flatten
 from luigi_monitor import monitor
 import pandas as pd
@@ -38,11 +38,11 @@ class SourceData(luigi.Task):
         client = initialize_mongo()
         target = MongoCollectionTarget(client, self.db, self.collection)
         coll = target.get_collection()
-        end = datetime.utcnow() - timedelta(days=14) # testing filter on old data
+        end = datetime.utcnow() - timedelta(days=20) # testing filter on old data
         start = end - timedelta(days=1)
         with self.output().open("w") as out_file:
             dump = {}
-            for i in coll.find({"scraped_date": {'$gte':start,'$lt':end}}).limit(1): #limit for testing
+            for i in coll.find({"scraped_date": {'$gte':start,'$lt':end}}).limit(2): #limit for testing
                 if i["media_type"] == "image":
                     url = i["s3_url"]
                     doc_id = str(i["_id"])
@@ -154,8 +154,8 @@ class StoreExtraction(luigi.Task):
     field = "extracted_text"
 
     def output(self):
-        #return luigi.LocalTarget("dummy_extraction.txt")
-        return luigi.MockFile("StoreExtraction", mirror_on_stderr=True)
+        return luigi.LocalTarget("dummy_extraction.txt")
+        #return MockTarget("StoreExtraction", mirror_on_stderr=True)
 
     def run(self):
         print("Beginning StoreExtraction() task ...")
@@ -176,8 +176,8 @@ class StoreExtraction(luigi.Task):
         print("{} image text extractions stored in MongoDB".format(len(doc_ids)))
 
         # Write a dummy output file so that StoreLabel's dependency is fulfilled
-        # with self.output().open("w") as out_file:
-        #     out_file.write("done")
+        with self.output().open("w") as out_file:
+            out_file.write("done")
                         
     def requires(self):
         return ExtractText(self.db, self.collection)
@@ -191,8 +191,8 @@ class StoreTranslation(luigi.Task):
     field = "translated_text"
 
     def output(self):
-        #return luigi.LocalTarget("dummy_translation.txt")
-        return luigi.MockFile("StoreTranslation", mirror_on_stderr=True)
+        return luigi.LocalTarget("dummy_translation.txt")
+        #return MockTarget("StoreTranslation", mirror_on_stderr=True)
 
     def run(self):
         print("Beginning StoreTranslation() task ...")
@@ -213,8 +213,8 @@ class StoreTranslation(luigi.Task):
         print("{} image text translations stored in MongoDB".format(len(doc_ids)))
 
         # Write a dummy output file so that StoreLabel's dependency is fulfilled
-        # with self.output().open("w") as out_file:
-        #     out_file.write("done")
+        with self.output().open("w") as out_file:
+            out_file.write("done")
                         
     def requires(self):
         return TranslateText(self.db, self.collection)
@@ -253,8 +253,8 @@ class StoreLabel(luigi.Task):
         os.remove("extracted_text.txt")
         os.remove("translated_text.txt")
         os.remove("filtered_text.txt")
-        # os.remove("dummy_extraction.txt")
-        # os.remove("dummy_translation.txt")
+        os.remove("dummy_extraction.txt")
+        os.remove("dummy_translation.txt")
         print("Out_files cleared")
                         
     def requires(self):
@@ -267,6 +267,6 @@ class StoreLabel(luigi.Task):
 
 
 if __name__ == "__main__": 
-    with monitor(slack_url=<webhook>, max_print=10, username= "Luigi-Slack-Bot"):
-        luigi.build([StoreLabel(db=os.environ.get("SHARECHAT_DB_NAME"), collection=os.environ.get("SHARECHAT_DB_COLLECTION"))]) 
+    #with monitor(slack_url=<webhook>, max_print=10, username= "Luigi-Slack-Bot"):
+    luigi.build([StoreLabel(db=os.environ.get("SHARECHAT_DB_NAME"), collection=os.environ.get("SHARECHAT_DB_COLLECTION"))]) 
 
