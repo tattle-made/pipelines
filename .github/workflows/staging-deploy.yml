@@ -28,7 +28,7 @@ jobs:
         shell: bash
         run: |
           echo "setting variables"
-          echo "::set-output name=sha_short::$(git
+          echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
       - name: Publish to Docker
         uses: elgohr/Publish-Docker-Github-Action@master
         with:
