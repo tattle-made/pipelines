@@ -24,3 +24,5 @@ share/
 *.egg-info/
 .installed.cfg
 *.egg
+
+.env
