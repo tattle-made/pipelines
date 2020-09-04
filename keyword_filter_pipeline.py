@@ -42,7 +42,7 @@ class SourceData(luigi.Task):
         start = end - timedelta(days=1)
         with self.output().open("w") as out_file:
             dump = {}
-            for i in coll.find({"scraped_date": {'$gte':start,'$lt':end}}).limit(2): #limit for testing
+            for i in coll.find({"scraped_date": {'$gte':start,'$lt':end}}): #limit for testing
                 if i["media_type"] == "image":
                     url = i["s3_url"]
                     doc_id = str(i["_id"])
@@ -267,6 +267,6 @@ class StoreLabel(luigi.Task):
 
 
 if __name__ == "__main__": 
-    #with monitor(slack_url=<webhook>, max_print=10, username= "Luigi-Slack-Bot"):
-    luigi.build([StoreLabel(db=os.environ.get("SHARECHAT_DB_NAME"), collection=os.environ.get("SHARECHAT_DB_COLLECTION"))]) 
+    with monitor(slack_url=os.environ.get("SLACK_WEBHOOK"), max_print=10, username= "Luigi-Slack-Bot"):
+        luigi.build([StoreLabel(db=os.environ.get("SHARECHAT_DB_NAME"), collection=os.environ.get("SHARECHAT_DB_COLLECTION"))]) 
 

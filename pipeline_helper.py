@@ -11,6 +11,7 @@ import googletrans
 from googletrans import Translator
 import re
 
+
 def initialize_mongo():
     client = MongoClient("mongodb+srv://"+os.environ.get("SHARECHAT_DB_USERNAME")+":"+os.environ.get("SHARECHAT_DB_PASSWORD")+"@tattle-data-fkpmg.mongodb.net/test?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE")
     #db = os.environ.get("SHARECHAT_DB_NAME")

@@ -31,7 +31,7 @@ luigid --background --pidfile luigid.pid --logdir luigi --state-path luigi/state
 6. Open localhost:8082 in a browser window to monitor the tasks
 7. Trigger the pipeline. Command line:
 ```
-python3 keyword_filter_pipeline.py StoreLabel 
+python3 keyword_filter_pipeline.py StoreLabel --workers 4
 ``` 
 
 ## Notes
