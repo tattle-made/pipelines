@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #venv
 .venv/
 venv/
@@ -26,3 +27,24 @@ share/
 *.egg
 
 .env
+=======
+# Luigi
+*.pid
+luigi_pipeline_output/
+luigi/
+luigi.cfg
+.venv/
+venv/
+ENV/
+.env
+.ipynb_checkpoints
+env/
+.Python
+lib/
+include/
+bin/
+share/
+.vscode/
+.log
+.DS_Store
+>>>>>>> bd3ac94d8434f0fb2e589284ff19968e92fbbb19

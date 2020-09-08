@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# pipelines
-Home of common Tattle Workflows
-=======
 ## Introduction
 
 The keyword filter pipeline passes multilingual and multimodal social media / chat app content archived by Tattle through a data pipeline comprising of a series of Luigi tasks. When triggered, it executes all the tasks and adds a binary label to each item's Mongo DB record depending on whether it contains some defined keywords. These keywords are topic words extracted via LDA topic modelling on Tattle's database of fact-checking stories. The purpose of this pipeline is to flag content that is more relevant, i.e. more likely to contain misinformation.
@@ -45,4 +41,3 @@ python3 keyword_filter_pipeline.py StoreLabel --workers 4
 - The Mongo DB fields for keyword filter labels and extracted text are hardcoded, but could also be passed as parameters along with the db and collection names. 
 - Despite their separate goals, StoreText needs to happen before StoreLabel because it requires a textfile that is deleted when the final task is completed. Deleting all the out_files ensures that the tasks can run again from the beginning.
 - The luigi monitor sends success/failure reports to Slack. Read the [documentation](https://github.com/hudl/luigi-monitor) and beware of hyphens.
->>>>>>> bd3ac94d8434f0fb2e589284ff19968e92fbbb19
