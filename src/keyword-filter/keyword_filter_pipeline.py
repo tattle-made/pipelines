@@ -12,7 +12,7 @@ import pandas as pd
 import datetime
 from datetime import datetime
 from datetime import timedelta
-from pipeline_helper import initialize_mongo, initialize_googleapi, extract_text, initialize_translator, translate_text, filter_text
+from pipeline_helper import initialize_mongo, initialize_googleapi, extract_text, initialize_translator, translate_text, filter_text, get_credentials
 import requests
 import json
 import time
@@ -38,7 +38,7 @@ class SourceData(luigi.Task):
         client = initialize_mongo()
         target = MongoCollectionTarget(client, self.db, self.collection)
         coll = target.get_collection()
-        end = datetime.utcnow() - timedelta(days=20) # testing filter on old data
+        end = datetime.utcnow() 
         start = end - timedelta(days=1)
         with self.output().open("w") as out_file:
             dump = {}
@@ -66,6 +66,7 @@ class ExtractText(luigi.Task):
     def run(self):
         print("Beginning ExtractText() task ...")
         print("Extracting text from images ...")
+        get_credentials()
         client = initialize_googleapi()
         with self.output().open("w") as out_file:
             dump = {}
