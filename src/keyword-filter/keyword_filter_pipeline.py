@@ -256,6 +256,7 @@ class StoreLabel(luigi.Task):
         os.remove("filtered_text.txt")
         os.remove("dummy_extraction.txt")
         os.remove("dummy_translation.txt")
+        os.remove("credentials.json")
         print("Out_files cleared")
                         
     def requires(self):
