@@ -10,7 +10,17 @@ import logging
 import googletrans
 from googletrans import Translator
 import re
+import boto3
+from boto3 import client
 
+def get_credentials():
+    aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID")
+    aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY_ID")
+    bucket = os.environ.get("AWS_BUCKET")
+    obj = os.environ.get("S3_CREDENTIALS_PATH")
+    s3 = boto3.client("s3", aws_access_key_id = aws_access_key_id,
+                          aws_secret_access_key= aws_secret_access_key) 
+    s3.download_file(bucket, obj, "credentials.json")
 
 def initialize_mongo():
     client = MongoClient("mongodb+srv://"+os.environ.get("SHARECHAT_DB_USERNAME")+":"+os.environ.get("SHARECHAT_DB_PASSWORD")+"@tattle-data-fkpmg.mongodb.net/test?retryWrites=true&w=majority&ssl=true&ssl_cert_reqs=CERT_NONE")
