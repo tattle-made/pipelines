@@ -18,6 +18,7 @@ import json
 import time
 from random import uniform
 import logging
+from bson.objectid import ObjectId
 
 
 
@@ -241,7 +242,7 @@ class StoreLabel(luigi.Task):
                     # target = MongoCellTarget(client, self.db, self.collection, doc_id, self.field)
                     # target.write(label)
                     # target.exists()
-                    dump[doc_id] = label
+                    dump[ObjectId(doc_id)] = label
         doc_ids = list(dump.keys())
         target = MongoRangeTarget(client, self.db, self.collection, doc_ids, self.field)
         target.write(dump)
