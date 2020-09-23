@@ -19,9 +19,9 @@ jobs:
         id: filter
         with:
           filters: |
-            api:
+            keyword-filter:
                 - 'src/keyword-filter/**/*'
-            ui-web-community:
+            test-pipeline:
                 - 'src/test-pipeline/**/*'
       - name: Declare some variables
         id: vars
@@ -51,13 +51,7 @@ jobs:
         run: |
           echo "setting variables"
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-      - name: Publish to Docker
-        uses: elgohr/Publish-Docker-Github-Action@master
-        with:
-          username: tattletech
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          name: tattletech/pipeline
-          tags: ${{ steps.vars.outputs.sha_short }}
+
 
         # uses: elgohr/Publish-Docker-Github-Action@master
         # with:
@@ -75,6 +69,7 @@ jobs:
       #   key: ${{ secrets.K8S_KEY }}
       #   script: |
       # ./autodeploy_khoj_api.sh ${{ steps.vars.outputs.sha_short }} >> ~/deploy.log 2>&1
+
 
     #   - name: Notify on Slack
     # uses: rtCamp/action-slack-notify@v2.0.0
