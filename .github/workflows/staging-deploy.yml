@@ -35,7 +35,7 @@ jobs:
           username: tattletech
           password: ${{ secrets.DOCKER_PASSWORD }}
           name: tattletech/pipeline
-          tags: "cron-latest"
+          tags: ${{ steps.vars.outputs.sha_short }}
 
   keyword-filter:
     runs-on: ubuntu-latest
@@ -51,7 +51,6 @@ jobs:
         run: |
           echo "setting variables"
           echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
-
 
         # uses: elgohr/Publish-Docker-Github-Action@master
         # with:
@@ -69,7 +68,6 @@ jobs:
       #   key: ${{ secrets.K8S_KEY }}
       #   script: |
       # ./autodeploy_khoj_api.sh ${{ steps.vars.outputs.sha_short }} >> ~/deploy.log 2>&1
-
 
     #   - name: Notify on Slack
     # uses: rtCamp/action-slack-notify@v2.0.0
