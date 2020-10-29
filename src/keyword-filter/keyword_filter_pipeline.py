@@ -44,7 +44,7 @@ class SourceData(luigi.Task):
             start = end - timedelta(days=1)
             with self.output().open("w") as out_file:
                 dump = {}
-                for i in coll.find({"scraped_date": {'$gte':start,'$lt':end}}).limit(10): #limit for testing
+                for i in coll.find({"scraped_date": {'$gte':start,'$lt':end}}): #limit for testing
                     if i["media_type"] == "image":
                         url = i["s3_url"]
                         doc_id = str(i["_id"])
@@ -116,6 +116,8 @@ class TranslateText(luigi.Task):
                     for extracted_text in in_file:
                         extracted_text = json.loads(extracted_text)
                         for doc_id,text in extracted_text.items():
+                            if text is None:
+                                text = ""
                             translation = translate_text(text, translator)
                             dump[doc_id] = translation 
                             time.sleep(uniform(3,5))
