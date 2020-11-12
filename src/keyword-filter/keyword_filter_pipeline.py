@@ -44,7 +44,8 @@ class SourceData(luigi.Task):
             start = end - timedelta(days=1)
             with self.output().open("w") as out_file:
                 dump = {}
-                for i in coll.find({"scraped_date": {'$gte':start,'$lt':end}}): #limit for testing
+                for i in coll.find({"scraped_date": {'$gte':start,'$lt':end},
+                                    "keyword_label": {"$exists": False}}): #limit for testing
                     if i["media_type"] == "image":
                         url = i["s3_url"]
                         doc_id = str(i["_id"])
